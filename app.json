@@ -38,11 +38,19 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f5a45ea1-3cfa-4bf5-978f-c7461e876e1e"
+      }
+    },
+    "owner": "darmayasaa"
   }
 }

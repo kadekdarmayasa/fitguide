@@ -2,32 +2,47 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors['dark'].tint,
+        tabBarInactiveTintColor: '#777777',
+        animation: 'fade',
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          backgroundColor: '#121213',
+          borderColor: '#252527',
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'Rubik_500Medium'
+        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Beranda',
+          tabBarIcon: ({ color }) => <Feather name="home" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="guide"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Panduan',
+          tabBarIcon: ({ color }) => <Ionicons name="barbell-outline" size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="program"
+        options={{
+          title: 'Program',
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="calendar-check-outline" size={28} color={color} />,
         }}
       />
     </Tabs>
