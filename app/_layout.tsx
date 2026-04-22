@@ -3,8 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Oswald_500Medium, Oswald_700Bold, useFonts } from '@expo-google-fonts/oswald';
+import { Oswald_400Regular, Oswald_500Medium, Oswald_700Bold, useFonts } from '@expo-google-fonts/oswald';
 import { Rubik_400Regular, Rubik_500Medium } from '@expo-google-fonts/rubik';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
@@ -16,13 +15,13 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-   const [loaded, error] = useFonts({
+  const [loaded, error] = useFonts({
+    Oswald_400Regular,
     Oswald_500Medium,
     Oswald_700Bold,
     Rubik_400Regular,
     Rubik_500Medium
   });
-  const colorScheme = useColorScheme();
 
   useEffect(() => {
     if (loaded || error) {

@@ -1,31 +1,44 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { useState } from 'react';
 import {
   Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AMBER = '#EFA500';
-const BG = '#1A1A1A';
 const CARD = '#171719';
-const CARD_DARK = '#1E1E1E';
 const ICON_BG = 'rgba(239,165,0,0.13)';
 const TEXT_PRIMARY = '#FFFFFF';
-const TEXT_MUTED = '#9A9A9A';
+const TEXT_MUTED = '#555555';
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const player = useVideoPlayer(
+    'https://res.cloudinary.com/djjwxxftg/video/upload/v1776863431/teknologi-multimedia-leg-day_cBMmO10g_1_f87imy.mp4',
+    (p) => {
+      p.loop = true;
+    }
+  );
+  const router = useRouter();
 
   return (
     <View style={[styles.root, { paddingTop: insets.top }]}>
       {/* ── Header ── */}
       <View style={styles.header}>
         <View style={styles.logoIconWrap}>
-          <MaterialCommunityIcons name="dumbbell" size={28} color="#121213" />
+          <MaterialCommunityIcons name="dumbbell" size={28} color="#121213" style={{
+            transform: [
+              { rotate: '-45deg' }
+            ]
+          }} />
         </View>
         <Text style={styles.logoText}>FITGUIDE</Text>
       </View>
@@ -37,13 +50,36 @@ export default function HomeScreen() {
       >
         {/* ── Featured Video Card ── */}
         <View style={styles.videoCard}>
-          <View style={styles.avatarWrap}>
-            <Image
-              source={{ uri: 'https://i.pravatar.cc/80?img=12' }}
-              style={styles.avatar}
-            />
-          </View>
-          <Text style={styles.videoLabel}>VIDEO THUMBNAIL (FEATURED CONTENT)</Text>
+          <VideoView
+            player={player}
+            style={StyleSheet.absoluteFill}
+            fullscreenOptions={{
+              enable: true,
+              orientation: 'landscape'
+            }}
+          />
+
+          {/* Thumbnail */}
+          {!isPlaying && (
+            <TouchableOpacity
+              style={styles.thumbnailOverlay}
+              onPress={() => {
+                player.play();
+                setIsPlaying(true);
+              }}
+            >
+              <Image
+                source={{
+                  uri: 'https://res.cloudinary.com/djjwxxftg/video/upload/so_1/v1776863431/teknologi-multimedia-leg-day_cBMmO10g_1_f87imy.jpg'
+                }}
+                style={StyleSheet.absoluteFill}
+                resizeMode="cover"
+              />
+              <View style={styles.playButton}>
+                <Ionicons name="play" size={28} color="#FFF" />
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* ── Stats Row ── */}
@@ -65,12 +101,11 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* ── Section: Mulai dari Sini ── */}
         <Text style={styles.sectionLabel}>MULAI DARI SINI</Text>
 
-        <TouchableOpacity style={styles.menuCard} activeOpacity={0.7}>
+        <TouchableOpacity style={styles.menuCard} activeOpacity={0.7} onPress={() => router.push('/guide')}>
           <View style={styles.menuIconWrap}>
-            <MaterialCommunityIcons name="dumbbell" size={24} color={AMBER} />
+            <MaterialCommunityIcons name="dumbbell" size={24} color={AMBER} style={{ transform: [{ rotate: '-45deg' }] }} />
           </View>
           <View style={styles.menuText}>
             <Text style={styles.menuTitle}>Panduan Latihan Beban</Text>
@@ -79,7 +114,7 @@ export default function HomeScreen() {
           <Ionicons name="chevron-forward" size={18} color={TEXT_MUTED} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuCard} activeOpacity={0.7}>
+        <TouchableOpacity style={styles.menuCard} activeOpacity={0.7} onPress={() => router.push('/program')}>
           <View style={styles.menuIconWrap}>
             <MaterialCommunityIcons name="calendar-month-outline" size={24} color={AMBER} />
           </View>
@@ -96,7 +131,7 @@ export default function HomeScreen() {
           <Text style={styles.tipBody}>
             Pastikan teknik gerakan benar sebelum menambah beban. Cedera akibat teknik salah lebih berbahaya dari beban berat.
           </Text>
-          <Text style={styles.tipAuthor}>- Ade Rai</Text>
+          <Text style={styles.tipAuthor}>- FitGuide</Text>
         </View>
       </ScrollView>
     </View>
@@ -152,23 +187,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2E2E2E',
   },
-  avatarWrap: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    overflow: 'hidden',
-    borderWidth: 2,
-    borderColor: AMBER,
+  thumbnailOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  avatar: {
-    width: '100%',
-    height: '100%',
-  },
-  videoLabel: {
-    color: TEXT_MUTED,
-    fontSize: 12,
-    letterSpacing: 0.5,
-    fontWeight: '500',
+  playButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   /* Stats */
@@ -210,8 +240,9 @@ const styles = StyleSheet.create({
   /* Section Label */
   sectionLabel: {
     color: TEXT_MUTED,
+    fontFamily: 'Oswald_400Regular',
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '400',
     letterSpacing: 1.2,
     marginTop: 4,
   },
@@ -225,7 +256,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 14,
     borderWidth: 1,
-    borderColor: '#2E2E2E',
+    borderColor: '#282829',
   },
   menuIconWrap: {
     width: 52,
@@ -241,28 +272,32 @@ const styles = StyleSheet.create({
   },
   menuTitle: {
     color: TEXT_PRIMARY,
+    fontFamily: 'Oswald_500Medium',
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: '500',
   },
   menuSub: {
-    color: TEXT_MUTED,
+    color: '#777777',
+    fontFamily: 'Rubik_400Regular',
+    fontWeight: '400',
     fontSize: 12,
   },
 
   /* Tip Card */
   tipCard: {
-    backgroundColor: CARD_DARK,
+    backgroundColor: CARD,
     borderRadius: 14,
     padding: 18,
     gap: 10,
     borderWidth: 1,
-    borderColor: '#2A2A2A',
+    borderColor: '#282829',
     marginTop: 4,
   },
   tipHeader: {
-    color: AMBER,
+    fontFamily: 'Oswald_500Medium',
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '500',
+    color: TEXT_MUTED,
     letterSpacing: 1.2,
   },
   tipBody: {
@@ -270,10 +305,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 22,
     fontWeight: '400',
+    fontFamily: 'Rubik_400Regular',
   },
   tipAuthor: {
     color: AMBER,
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: '500',
+    fontFamily: 'Rubik_500Medium'
   },
 });
