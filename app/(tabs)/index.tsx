@@ -1,7 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -28,6 +28,33 @@ export default function HomeScreen() {
     }
   );
   const router = useRouter();
+
+  const tips = [
+    {
+      id: 1,
+      text: "Pastikan teknik gerakan benar sebelum menambah beban. Cedera akibat teknik salah lebih berbahaya dari beban berat.",
+      author: "FitGuide"
+    },
+    {
+      id: 2,
+      text: "Jangan lupa pemanasan sebelum latihan untuk menghindari cedera.",
+      author: "FitGuide"
+    },
+    {
+      id: 3,
+      text: "Istirahat yang cukup sama pentingnya dengan latihan.",
+      author: "FitGuide"
+    },
+  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % tips.length);
+    }, 25000); // 60.000 ms = 1 menit
+
+    return () => clearInterval(interval); // cleanup
+  }, []);
 
   return (
     <View style={[styles.root, { paddingTop: insets.top }]}>
@@ -129,9 +156,11 @@ export default function HomeScreen() {
         <View style={styles.tipCard}>
           <Text style={styles.tipHeader}>TIP HARI INI</Text>
           <Text style={styles.tipBody}>
-            Pastikan teknik gerakan benar sebelum menambah beban. Cedera akibat teknik salah lebih berbahaya dari beban berat.
+            {tips[currentIndex].text}
           </Text>
-          <Text style={styles.tipAuthor}>- FitGuide</Text>
+          <Text style={styles.tipAuthor}>
+            - {tips[currentIndex].author}
+          </Text>
         </View>
       </ScrollView>
     </View>
