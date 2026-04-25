@@ -1,0 +1,18 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Head -->
+  <ellipse cx="60" cy="22" rx="14" ry="14" fill="#3a3530"/>
+  <!-- Torso -->
+  <rect x="34" y="35" width="52" height="50" rx="6" fill="#3a3530"/>
+  <!-- Left arm -->
+  <rect x="18" y="37" width="15" height="38" rx="6" fill="#3a3530"/>
+  <!-- Right arm -->
+  <rect x="87" y="37" width="15" height="38" rx="6" fill="#3a3530"/>
+  <!-- Trapezius -->
+  <path d="M44 37 Q52 33 60 35 Q68 33 76 37 L73 46 Q65 42 60 44 Q55 42 47 46Z" fill="#e8a020"/>
+  <!-- Left lat -->
+  <path d="M34 43 Q24 55 26 73 Q35 68 40 56 Q42 48 38 43Z" fill="#e8a020"/>
+  <!-- Right lat -->
+  <path d="M86 43 Q96 55 94 73 Q85 68 80 56 Q78 48 82 43Z" fill="#e8a020"/>
+  <!-- Spine -->
+  <line x1="60" y1="46" x2="60" y2="82" stroke="#e8a020" stroke-width="2" stroke-linecap="round" stroke-dasharray="3,3"/>
+</svg>

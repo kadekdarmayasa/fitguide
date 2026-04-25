@@ -1,0 +1,16 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Head -->
+  <ellipse cx="60" cy="22" rx="14" ry="14" fill="#3a3530"/>
+  <!-- Torso -->
+  <rect x="34" y="35" width="52" height="50" rx="6" fill="#3a3530"/>
+  <!-- Left arm -->
+  <rect x="18" y="37" width="15" height="38" rx="6" fill="#3a3530"/>
+  <!-- Right arm -->
+  <rect x="87" y="37" width="15" height="38" rx="6" fill="#3a3530"/>
+  <!-- Chest highlight -->
+  <path d="M44 43 Q52 52 60 47 Q68 52 76 43 Q72 72 60 72 Q48 72 44 43Z" fill="#e8a020"/>
+  <!-- Collarbone left -->
+  <line x1="44" y1="41" x2="60" y2="47" stroke="#e8a020" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Collarbone right -->
+  <line x1="76" y1="41" x2="60" y2="47" stroke="#e8a020" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

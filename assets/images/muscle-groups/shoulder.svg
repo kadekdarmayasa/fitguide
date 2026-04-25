@@ -1,0 +1,16 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Head -->
+  <ellipse cx="60" cy="22" rx="14" ry="14" fill="#3a3530"/>
+  <!-- Torso -->
+  <rect x="34" y="35" width="52" height="50" rx="6" fill="#3a3530"/>
+  <!-- Left arm base -->
+  <rect x="18" y="37" width="15" height="38" rx="6" fill="#3a3530"/>
+  <!-- Right arm base -->
+  <rect x="87" y="37" width="15" height="38" rx="6" fill="#3a3530"/>
+  <!-- Left deltoid -->
+  <ellipse cx="26" cy="44" rx="13" ry="11" fill="#e8a020"/>
+  <!-- Right deltoid -->
+  <ellipse cx="94" cy="44" rx="13" ry="11" fill="#e8a020"/>
+  <!-- Upper trapezius -->
+  <path d="M44 37 Q52 33 60 35 Q68 33 76 37 L74 44 Q66 41 60 42 Q54 41 46 44Z" fill="#e8a020"/>
+</svg>

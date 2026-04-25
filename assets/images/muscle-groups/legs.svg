@@ -1,0 +1,18 @@
+<svg width="120" height="140" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+  <!-- Head -->
+  <ellipse cx="60" cy="16" rx="13" ry="13" fill="#3a3530"/>
+  <!-- Torso -->
+  <rect x="38" y="28" width="44" height="30" rx="5" fill="#3a3530"/>
+  <!-- Left thigh highlight -->
+  <rect x="36" y="58" width="19" height="44" rx="8" fill="#e8a020"/>
+  <!-- Right thigh highlight -->
+  <rect x="65" y="58" width="19" height="44" rx="8" fill="#e8a020"/>
+  <!-- Left calf -->
+  <path d="M38 102 Q36 118 40 130 Q44 133 49 130 Q52 118 54 102Z" fill="#c8841a"/>
+  <!-- Right calf -->
+  <path d="M66 102 Q64 118 68 130 Q72 133 77 130 Q80 118 82 102Z" fill="#c8841a"/>
+  <!-- Quad line left -->
+  <line x1="45" y1="62" x2="42" y2="96" stroke="#ffbe40" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Quad line right -->
+  <line x1="75" y1="62" x2="78" y2="96" stroke="#ffbe40" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,23 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Head -->
+  <ellipse cx="60" cy="22" rx="14" ry="14" fill="#3a3530"/>
+  <!-- Torso -->
+  <rect x="34" y="35" width="52" height="60" rx="6" fill="#3a3530"/>
+  <!-- Left arm -->
+  <rect x="18" y="37" width="15" height="38" rx="6" fill="#3a3530"/>
+  <!-- Right arm -->
+  <rect x="87" y="37" width="15" height="38" rx="6" fill="#3a3530"/>
+  <!-- Six-pack: top row -->
+  <rect x="44" y="39" width="13" height="13" rx="3" fill="#e8a020"/>
+  <rect x="63" y="39" width="13" height="13" rx="3" fill="#e8a020"/>
+  <!-- Six-pack: mid row -->
+  <rect x="44" y="55" width="13" height="13" rx="3" fill="#e8a020"/>
+  <rect x="63" y="55" width="13" height="13" rx="3" fill="#e8a020"/>
+  <!-- Six-pack: bottom row -->
+  <rect x="44" y="71" width="13" height="12" rx="3" fill="#c8841a"/>
+  <rect x="63" y="71" width="13" height="12" rx="3" fill="#c8841a"/>
+  <!-- Left oblique -->
+  <line x1="34" y1="44" x2="43" y2="78" stroke="#e8a020" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Right oblique -->
+  <line x1="86" y1="44" x2="77" y2="78" stroke="#e8a020" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
