@@ -1,6 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -32,10 +34,15 @@ const STEPS = [
   'Turunkan dumbbell ke posisi semula dengan gerakan yang terkontrol dan lambat. Ambil napas saat beban bergerak turun.',
 ];
 
+const VIDEO_URL = 'https://res.cloudinary.com/djjwxxftg/video/upload/v1777128364/0424_gbbi31.mp4';
+const THUMBNAIL_URL = 'https://res.cloudinary.com/djjwxxftg/video/upload/so_1/v1777128364/0424_gbbi31.jpg';
+
 export default function ExerciseDetailScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string; exerciseId: string }>();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const player = useVideoPlayer(VIDEO_URL, (p) => { p.loop = true; });
 
   const groupLabel = MUSCLE_GROUP_LABELS[id] ?? id?.toUpperCase();
 
@@ -59,10 +66,27 @@ export default function ExerciseDetailScreen() {
       >
         {/* Video card */}
         <View style={styles.videoCard}>
-          <View style={styles.playCircle}>
-            <Text style={styles.playIcon}>▶</Text>
-          </View>
-          <Text style={styles.videoLabel}>VIDEO DEMONSTRASI</Text>
+          <VideoView
+            player={player}
+            style={StyleSheet.absoluteFill}
+            fullscreenOptions={{ enable: true, orientation: 'landscape' }}
+          />
+          {!isPlaying && (
+            <TouchableOpacity
+              style={styles.thumbnailOverlay}
+              onPress={() => { player.play(); setIsPlaying(true); }}
+              activeOpacity={1}
+            >
+              <Image
+                source={{ uri: THUMBNAIL_URL }}
+                style={StyleSheet.absoluteFill}
+                contentFit="cover"
+              />
+              <View style={styles.playButton}>
+                <Ionicons name="play" size={24} color="#FFF" />
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Badge row */}
@@ -212,33 +236,25 @@ const styles = StyleSheet.create({
 
   /* Video card */
   videoCard: {
-    height: 177,
+    height: 220,
     backgroundColor: CARD,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: CARD_BORDER,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
+    overflow: 'hidden',
   },
-  playCircle: {
-    width: 58,
-    height: 58,
-    borderRadius: 29,
-    backgroundColor: AMBER,
+  thumbnailOverlay: {
+    ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  playIcon: {
-    color: '#000',
-    fontSize: 20,
-    marginLeft: 3,
-  },
-  videoLabel: {
-    fontFamily: 'Rubik_400Regular',
-    fontSize: 12,
-    color: TEXT_MUTED,
-    letterSpacing: 1.2,
+  playButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   /* Badge row */
