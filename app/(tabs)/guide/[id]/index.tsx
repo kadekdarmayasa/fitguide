@@ -1,10 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SvgProps } from 'react-native-svg';
-
 import ArmsIcon from '@/assets/images/muscle-groups/arms.svg';
 import BackIcon from '@/assets/images/muscle-groups/back.svg';
 import ChestIcon from '@/assets/images/muscle-groups/chest.svg';
@@ -14,16 +7,19 @@ import ShoulderIcon from '@/assets/images/muscle-groups/shoulder.svg';
 import ArnoldPressIcon from '@/assets/images/muscle-groups/shoulder-exercises/arnold_press.svg';
 import LateralRaiseIcon from '@/assets/images/muscle-groups/shoulder-exercises/lateral_raise.svg';
 import OverheadPressIcon from '@/assets/images/muscle-groups/shoulder-exercises/overhead_press.svg';
+import { Badge, ExerciseCard } from '@/components/exercise-card';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SvgProps } from 'react-native-svg';
 
 const AMBER    = '#EFA500';
 const CARD     = '#171719';
-const ICON_BG  = 'rgba(239,165,0,0.13)';
 const TEXT_CREAM = '#F0ECC7';
-const TEXT_NAME  = '#E8E4DF';
 const TEXT_MUTED = '#555555';
 const THUMB_BG   = 'rgba(12,12,13,0.5)';
-
-type Badge = { label: string; bg: string; text: string };
 
 const B_COMPOUND:  Badge = { label: 'Compound',  bg: 'rgba(239,165,0,0.13)',   text: '#EFA500' };
 const B_ISOLATION: Badge = { label: 'Isolation',  bg: 'rgba(93,133,180,0.13)', text: '#5CA8FF' };
@@ -76,9 +72,9 @@ const GROUPS: Record<string, GroupData> = {
     description: 'Deltoid Anterior (depan), Medial (samping) & Posterior (belakang) — tiga kepala yang membentuk bahu.',
     Icon: ShoulderIcon,
     exercises: [
-      { id: 'overhead-press', name: 'Overhead Press', targets: 'Anterior . Medial',           type: 'compound',  movement: 'push', Icon: OverheadPressIcon, badges: [B_COMPOUND,  B_PUSH] },
-      { id: 'lateral-raise',  name: 'Lateral Raise',  targets: 'Medial',                      type: 'isolation', movement: 'push', Icon: LateralRaiseIcon,  badges: [B_ISOLATION, B_PUSH] },
-      { id: 'arnold-press',   name: 'Arnold Press',   targets: 'Anterior . Medial . Posterior', type: 'isolation', movement: 'push', Icon: ArnoldPressIcon,   badges: [B_ISO_WARM, B_PUSH] },
+      { id: 'overhead-press', name: 'Overhead Press', targets: 'Anterior . Medial',             type: 'compound',  movement: 'push', Icon: OverheadPressIcon, badges: [B_COMPOUND,  B_PUSH] },
+      { id: 'lateral-raise',  name: 'Lateral Raise',  targets: 'Medial',                        type: 'isolation', movement: 'push', Icon: LateralRaiseIcon,  badges: [B_ISOLATION, B_PUSH] },
+      { id: 'arnold-press',   name: 'Arnold Press',   targets: 'Anterior . Medial . Posterior', type: 'isolation', movement: 'push', Icon: ArnoldPressIcon,   badges: [B_ISO_WARM,  B_PUSH] },
     ],
   },
   arms: {
@@ -190,28 +186,14 @@ export default function MuscleGroupDetail() {
 
         {/* ── Exercise list ── */}
         {filtered.map((ex) => (
-          <TouchableOpacity
+          <ExerciseCard
             key={ex.id}
-            style={styles.exerciseCard}
-            activeOpacity={0.7}
+            name={ex.name}
+            targets={ex.targets}
+            Icon={ex.Icon}
+            badges={ex.badges}
             onPress={() => router.push(`/guide/${id}/${ex.id}`)}
-          >
-            <View style={styles.exerciseThumb}>
-              {ex.Icon && <ex.Icon width={34} height={34} />}
-            </View>
-            <View style={styles.exerciseContent}>
-              <Text style={styles.exerciseName}>{ex.name}</Text>
-              <Text style={styles.exerciseTargets}>{ex.targets}</Text>
-              <View style={styles.badgeRow}>
-                {ex.badges.map((b, i) => (
-                  <View key={i} style={[styles.badge, { backgroundColor: b.bg }]}>
-                    <Text style={[styles.badgeText, { color: b.text }]}>{b.label}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color={TEXT_MUTED} />
-          </TouchableOpacity>
+          />
         ))}
       </ScrollView>
     </View>
@@ -288,7 +270,7 @@ const styles = StyleSheet.create({
   infoDesc: {
     fontFamily: 'Rubik_400Regular',
     fontSize: 12,
-    color: TEXT_NAME,
+    color: '#E8E4DF',
     lineHeight: 16,
   },
 
@@ -316,51 +298,5 @@ const styles = StyleSheet.create({
   filterTextActive: {
     fontFamily: 'Rubik_500Medium',
     color: '#0C0C0D',
-  },
-
-  exerciseCard: {
-    backgroundColor: CARD,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#282829',
-    padding: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  exerciseThumb: {
-    width: 58,
-    height: 58,
-    borderRadius: 4,
-    backgroundColor: THUMB_BG,
-    overflow: 'hidden',
-    flexShrink: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  exerciseContent: { flex: 1, gap: 4 },
-  exerciseName: {
-    fontFamily: 'Oswald_500Medium',
-    fontSize: 14,
-    color: TEXT_NAME,
-  },
-  exerciseTargets: {
-    fontFamily: 'Rubik_400Regular',
-    fontSize: 12,
-    color: TEXT_MUTED,
-  },
-  badgeRow: {
-    flexDirection: 'row',
-    gap: 6,
-    marginTop: 4,
-  },
-  badge: {
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-  },
-  badgeText: {
-    fontFamily: 'Rubik_500Medium',
-    fontSize: 10,
   },
 });
