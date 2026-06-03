@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 
 const DOT_COLORS = ['#F59E0B', '#78580A', '#4A3608'];
 
@@ -64,6 +64,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 28,
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      maxWidth: 430,
+      marginHorizontal: 'auto',
+      alignSelf: 'center',
+      borderLeftWidth: 1,
+      borderRightWidth: 1,
+      borderColor: '#2E2E30',
+    }),
   },
   logoWrap: {
     width: 120,

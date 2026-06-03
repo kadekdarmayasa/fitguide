@@ -3,17 +3,17 @@ import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const BG         = '#0C0C0D';
-const CARD       = '#171719';
+const BG = '#0C0C0D';
+const CARD = '#171719';
 const CARD_BORDER = '#282829';
-const AMBER      = '#EFA500';
-const TEXT_CREAM  = '#F0ECC7';
-const TEXT_NAME   = '#E8E4DF';
-const TEXT_MUTED  = '#555555';
-const TEXT_DARK   = '#777777';
+const AMBER = '#EFA500';
+const TEXT_CREAM = '#F0ECC7';
+const TEXT_NAME = '#E8E4DF';
+const TEXT_MUTED = '#555555';
+const TEXT_DARK = '#777777';
 
 const STEPS = [
   'Berdiri tegak dengan kaki dibuka selebar bahu. Busungkan dada dan tarik bahu ke bawah agar tidak membungkuk.',
@@ -25,7 +25,7 @@ const STEPS = [
   'Turunkan dumbbell ke posisi semula dengan gerakan yang terkontrol dan lambat. Ambil napas saat beban bergerak turun.',
 ];
 
-const VIDEO_URL     = 'https://res.cloudinary.com/djjwxxftg/video/upload/v1777128364/0424_gbbi31.mp4';
+const VIDEO_URL = 'https://res.cloudinary.com/djjwxxftg/video/upload/v1777128364/0424_gbbi31.mp4';
 const THUMBNAIL_URL = 'https://res.cloudinary.com/djjwxxftg/video/upload/so_1/v1777128364/0424_gbbi31.jpg';
 
 export default function ExerciseDetailScreen() {
@@ -181,7 +181,19 @@ export default function ExerciseDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: BG },
+  root: {
+    flex: 1,
+    backgroundColor: BG,
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      maxWidth: 430,
+      marginHorizontal: 'auto',
+      alignSelf: 'center',
+      borderLeftWidth: 1,
+      borderRightWidth: 1,
+      borderColor: '#2E2E30',
+    }),
+  },
 
   navHeader: {
     flexDirection: 'row',

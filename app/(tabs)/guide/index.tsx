@@ -5,7 +5,7 @@ import CoreIcon from '@/assets/images/muscle-groups/core.svg';
 import LegsIcon from '@/assets/images/muscle-groups/legs.svg';
 import ShoulderIcon from '@/assets/images/muscle-groups/shoulder.svg';
 import { useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgProps } from 'react-native-svg';
 
@@ -133,7 +133,16 @@ export default function GuideScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#0C0C0D' },
+  root: {
+    flex: 1,
+    backgroundColor: '#0C0C0D',
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      maxWidth: 430,
+      marginHorizontal: 'auto',
+      alignSelf: 'center',
+    }),
+  },
   scroll: { flex: 1 },
   scrollContent: {
     paddingHorizontal: 20,

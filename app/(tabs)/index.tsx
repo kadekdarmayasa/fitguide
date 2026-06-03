@@ -4,6 +4,7 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEffect, useState } from 'react';
 import {
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -171,6 +172,13 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: '#0C0C0D',
+    maxWidth: 430,
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      maxWidth: 430,
+      marginHorizontal: 'auto',
+      alignSelf: 'center',
+    }),
   },
 
   /* Header */
@@ -215,6 +223,7 @@ const styles = StyleSheet.create({
     gap: 16,
     borderWidth: 1,
     borderColor: '#2E2E2E',
+    overflow: 'hidden'
   },
   thumbnailOverlay: {
     ...StyleSheet.absoluteFillObject,

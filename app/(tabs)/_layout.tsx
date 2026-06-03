@@ -6,8 +6,30 @@ import { Colors } from '@/constants/theme';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Platform, View } from 'react-native';
 
 export default function TabLayout() {
+  if (Platform.OS === 'web') {
+    return (
+      <View style={{
+        flex: 1,
+        maxWidth: 430,
+        width: '100%',
+        marginHorizontal: 'auto',
+        backgroundColor: '#0C0C0D',
+        alignSelf: 'center',
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderColor: '#2E2E30',
+      }}>
+        <TabsContent />
+      </View>
+    );
+  }
+  return <TabsContent />;
+}
+
+function TabsContent() {
   return (
     <Tabs
       screenOptions={{
@@ -18,10 +40,11 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarStyle: {
           backgroundColor: '#121213',
-          borderColor: '#252527',
+          borderTopColor: '#252527',
+          borderTopWidth: 0.5,
         },
         tabBarLabelStyle: {
-          fontFamily: 'Rubik_500Medium'
+          fontFamily: 'Rubik_500Medium',
         },
       }}>
       <Tabs.Screen
@@ -42,7 +65,8 @@ export default function TabLayout() {
         name="program"
         options={{
           title: 'Program',
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="calendar-check-outline" size={28} color={color} />,
+          tabBarIcon: ({ color }) =>
+            <MaterialCommunityIcons name="calendar-check-outline" size={28} color={color} />,
         }}
       />
     </Tabs>

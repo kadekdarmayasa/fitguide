@@ -4,22 +4,22 @@ import OverheadPressIcon from '@/assets/images/muscle-groups/shoulder-exercises/
 import { Badge, ExerciseCard } from '@/components/exercise-card';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgProps } from 'react-native-svg';
 
-const AMBER      = '#EFA500';
-const CARD       = '#171719';
+const AMBER = '#EFA500';
+const CARD = '#171719';
 const CARD_BORDER = '#282829';
-const TEXT_CREAM  = '#F0ECC7';
-const TEXT_MUTED  = '#555555';
-const TEXT_DARK   = '#777777';
+const TEXT_CREAM = '#F0ECC7';
+const TEXT_MUTED = '#555555';
+const TEXT_DARK = '#777777';
 
-const B_COMPOUND:  Badge = { label: 'Compound',  bg: 'rgba(239,165,0,0.13)',    text: '#EFA500' };
-const B_ISOLATION: Badge = { label: 'Isolation',  bg: 'rgba(93,133,180,0.13)',  text: '#5CA8FF' };
-const B_ISO_WARM:  Badge = { label: 'Isolation',  bg: 'rgba(239,165,0,0.13)',   text: '#EFA500' };
-const B_PUSH:      Badge = { label: 'Push',        bg: 'rgba(255,116,116,0.13)', text: '#FF8585' };
-const B_PULL:      Badge = { label: 'Pull',        bg: 'rgba(93,133,180,0.13)', text: '#5CA8FF' };
+const B_COMPOUND: Badge = { label: 'Compound', bg: 'rgba(239,165,0,0.13)', text: '#EFA500' };
+const B_ISOLATION: Badge = { label: 'Isolation', bg: 'rgba(93,133,180,0.13)', text: '#5CA8FF' };
+const B_ISO_WARM: Badge = { label: 'Isolation', bg: 'rgba(239,165,0,0.13)', text: '#EFA500' };
+const B_PUSH: Badge = { label: 'Push', bg: 'rgba(255,116,116,0.13)', text: '#FF8585' };
+const B_PULL: Badge = { label: 'Pull', bg: 'rgba(93,133,180,0.13)', text: '#5CA8FF' };
 
 type SessionExercise = {
   id: string;
@@ -37,85 +37,85 @@ type SessionInfo = {
 };
 
 const MUSCLE_GROUP_LABELS: Record<string, string> = {
-  chest:    'Dada',
-  back:     'Punggung',
+  chest: 'Dada',
+  back: 'Punggung',
   shoulder: 'Bahu',
-  arms:     'Lengan',
-  legs:     'Kaki',
-  core:     'Core',
+  arms: 'Lengan',
+  legs: 'Kaki',
+  core: 'Core',
 };
 
 const WEEK_LABELS: Record<string, string> = {
-  'w1':   'Minggu 1',
-  'w2':   'Minggu 2',
+  'w1': 'Minggu 1',
+  'w2': 'Minggu 2',
   'w3-4': 'Minggu 3-4',
   'w3-8': 'Minggu 3-8',
   'w1-4': 'Minggu 1-4',
   'w5-8': 'Minggu 5-8',
-  'w9-12':'Minggu 9-12',
+  'w9-12': 'Minggu 9-12',
 };
 
 /* ── Shared exercise pools ── */
 
 const PUSH_EXERCISES: SessionExercise[] = [
-  { id: 'overhead-press', name: 'Overhead Press', targets: 'Anterior . Medial',             Icon: OverheadPressIcon, badges: [B_COMPOUND,  B_PUSH], guideId: 'shoulder' },
-  { id: 'lateral-raise',  name: 'Lateral Raise',  targets: 'Medial',                        Icon: LateralRaiseIcon,  badges: [B_ISOLATION, B_PUSH], guideId: 'shoulder' },
-  { id: 'arnold-press',   name: 'Arnold Press',   targets: 'Anterior . Medial . Posterior', Icon: ArnoldPressIcon,   badges: [B_ISO_WARM,  B_PUSH], guideId: 'shoulder' },
+  { id: 'overhead-press', name: 'Overhead Press', targets: 'Anterior . Medial', Icon: OverheadPressIcon, badges: [B_COMPOUND, B_PUSH], guideId: 'shoulder' },
+  { id: 'lateral-raise', name: 'Lateral Raise', targets: 'Medial', Icon: LateralRaiseIcon, badges: [B_ISOLATION, B_PUSH], guideId: 'shoulder' },
+  { id: 'arnold-press', name: 'Arnold Press', targets: 'Anterior . Medial . Posterior', Icon: ArnoldPressIcon, badges: [B_ISO_WARM, B_PUSH], guideId: 'shoulder' },
 ];
 
 const PULL_EXERCISES: SessionExercise[] = [
-  { id: 'pull-up',      name: 'Pull-Up',          targets: 'Upper . Lat',    Icon: null, badges: [B_COMPOUND,  B_PULL], guideId: 'back' },
-  { id: 'bent-row',     name: 'Bent Over Row',    targets: 'Middle . Lower', Icon: null, badges: [B_COMPOUND,  B_PULL], guideId: 'back' },
-  { id: 'lat-pulldown', name: 'Lat Pulldown',     targets: 'Lat',            Icon: null, badges: [B_COMPOUND,  B_PULL], guideId: 'back' },
-  { id: 'cable-row',    name: 'Seated Cable Row', targets: 'Middle',         Icon: null, badges: [B_ISOLATION, B_PULL], guideId: 'back' },
+  { id: 'pull-up', name: 'Pull-Up', targets: 'Upper . Lat', Icon: null, badges: [B_COMPOUND, B_PULL], guideId: 'back' },
+  { id: 'bent-row', name: 'Bent Over Row', targets: 'Middle . Lower', Icon: null, badges: [B_COMPOUND, B_PULL], guideId: 'back' },
+  { id: 'lat-pulldown', name: 'Lat Pulldown', targets: 'Lat', Icon: null, badges: [B_COMPOUND, B_PULL], guideId: 'back' },
+  { id: 'cable-row', name: 'Seated Cable Row', targets: 'Middle', Icon: null, badges: [B_ISOLATION, B_PULL], guideId: 'back' },
 ];
 
 const LEGS_EXERCISES: SessionExercise[] = [
-  { id: 'squat',     name: 'Squat',             targets: 'Quad . Glute',      Icon: null, badges: [B_COMPOUND,  B_PUSH], guideId: 'legs' },
-  { id: 'leg-press', name: 'Leg Press',         targets: 'Quad . Glute',      Icon: null, badges: [B_COMPOUND,  B_PUSH], guideId: 'legs' },
-  { id: 'rdl',       name: 'Romanian Deadlift', targets: 'Hamstring . Glute', Icon: null, badges: [B_COMPOUND,  B_PULL], guideId: 'legs' },
+  { id: 'squat', name: 'Squat', targets: 'Quad . Glute', Icon: null, badges: [B_COMPOUND, B_PUSH], guideId: 'legs' },
+  { id: 'leg-press', name: 'Leg Press', targets: 'Quad . Glute', Icon: null, badges: [B_COMPOUND, B_PUSH], guideId: 'legs' },
+  { id: 'rdl', name: 'Romanian Deadlift', targets: 'Hamstring . Glute', Icon: null, badges: [B_COMPOUND, B_PULL], guideId: 'legs' },
 ];
 
 const FULLBODY_EXERCISES: SessionExercise[] = [
-  { id: 'squat',       name: 'Squat',          targets: 'Quad . Glute',      Icon: null, badges: [B_COMPOUND, B_PUSH], guideId: 'legs'    },
-  { id: 'bench-press', name: 'Bench Press',    targets: 'Upper . Lower',     Icon: null, badges: [B_COMPOUND, B_PUSH], guideId: 'chest'   },
-  { id: 'bent-row',    name: 'Bent Over Row',  targets: 'Middle . Lower',    Icon: null, badges: [B_COMPOUND, B_PULL], guideId: 'back'    },
+  { id: 'squat', name: 'Squat', targets: 'Quad . Glute', Icon: null, badges: [B_COMPOUND, B_PUSH], guideId: 'legs' },
+  { id: 'bench-press', name: 'Bench Press', targets: 'Upper . Lower', Icon: null, badges: [B_COMPOUND, B_PUSH], guideId: 'chest' },
+  { id: 'bent-row', name: 'Bent Over Row', targets: 'Middle . Lower', Icon: null, badges: [B_COMPOUND, B_PULL], guideId: 'back' },
   { id: 'overhead-press', name: 'Overhead Press', targets: 'Anterior . Medial', Icon: OverheadPressIcon, badges: [B_COMPOUND, B_PUSH], guideId: 'shoulder' },
 ];
 
 const UPPER_EXERCISES: SessionExercise[] = [
-  { id: 'bench-press',    name: 'Bench Press',    targets: 'Upper . Lower',             Icon: null,              badges: [B_COMPOUND,  B_PUSH], guideId: 'chest'   },
-  { id: 'overhead-press', name: 'Overhead Press', targets: 'Anterior . Medial',         Icon: OverheadPressIcon, badges: [B_COMPOUND,  B_PUSH], guideId: 'shoulder'},
-  { id: 'pull-up',        name: 'Pull-Up',         targets: 'Upper . Lat',              Icon: null,              badges: [B_COMPOUND,  B_PULL], guideId: 'back'    },
-  { id: 'barbell-curl',   name: 'Barbell Curl',    targets: 'Bicep',                    Icon: null,              badges: [B_ISOLATION, B_PULL], guideId: 'arms'    },
+  { id: 'bench-press', name: 'Bench Press', targets: 'Upper . Lower', Icon: null, badges: [B_COMPOUND, B_PUSH], guideId: 'chest' },
+  { id: 'overhead-press', name: 'Overhead Press', targets: 'Anterior . Medial', Icon: OverheadPressIcon, badges: [B_COMPOUND, B_PUSH], guideId: 'shoulder' },
+  { id: 'pull-up', name: 'Pull-Up', targets: 'Upper . Lat', Icon: null, badges: [B_COMPOUND, B_PULL], guideId: 'back' },
+  { id: 'barbell-curl', name: 'Barbell Curl', targets: 'Bicep', Icon: null, badges: [B_ISOLATION, B_PULL], guideId: 'arms' },
 ];
 
 const LOWER_EXERCISES: SessionExercise[] = [
-  { id: 'squat',         name: 'Squat',             targets: 'Quad . Glute',      Icon: null, badges: [B_COMPOUND,  B_PUSH], guideId: 'legs' },
-  { id: 'rdl',           name: 'Romanian Deadlift', targets: 'Hamstring . Glute', Icon: null, badges: [B_COMPOUND,  B_PULL], guideId: 'legs' },
-  { id: 'leg-curl',      name: 'Leg Curl',          targets: 'Hamstring',         Icon: null, badges: [B_ISOLATION, B_PULL], guideId: 'legs' },
+  { id: 'squat', name: 'Squat', targets: 'Quad . Glute', Icon: null, badges: [B_COMPOUND, B_PUSH], guideId: 'legs' },
+  { id: 'rdl', name: 'Romanian Deadlift', targets: 'Hamstring . Glute', Icon: null, badges: [B_COMPOUND, B_PULL], guideId: 'legs' },
+  { id: 'leg-curl', name: 'Leg Curl', targets: 'Hamstring', Icon: null, badges: [B_ISOLATION, B_PULL], guideId: 'legs' },
 ];
 
 /* ── Session data keyed by programId → sessionId (dayId) ── */
 
 const SESSION_DATA: Record<string, Record<string, SessionInfo>> = {
   'push-pull-legs': {
-    senin:  { amberTitle: 'SENIN • PUSH',   muscles: 'Dada • Bahu • Trisep',  exercises: PUSH_EXERCISES  },
-    selasa: { amberTitle: 'SELASA • PULL',  muscles: 'Punggung • Bisep',       exercises: PULL_EXERCISES  },
-    rabu:   { amberTitle: 'RABU • LEGS',    muscles: 'Paha • Betis • Gluteus', exercises: LEGS_EXERCISES  },
-    jumat:  { amberTitle: 'JUMAT • PUSH',   muscles: 'Dada • Bahu • Trisep',  exercises: PUSH_EXERCISES  },
-    sabtu:  { amberTitle: 'SABTU • PULL',   muscles: 'Punggung • Bisep',       exercises: PULL_EXERCISES  },
+    senin: { amberTitle: 'SENIN • PUSH', muscles: 'Dada • Bahu • Trisep', exercises: PUSH_EXERCISES },
+    selasa: { amberTitle: 'SELASA • PULL', muscles: 'Punggung • Bisep', exercises: PULL_EXERCISES },
+    rabu: { amberTitle: 'RABU • LEGS', muscles: 'Paha • Betis • Gluteus', exercises: LEGS_EXERCISES },
+    jumat: { amberTitle: 'JUMAT • PUSH', muscles: 'Dada • Bahu • Trisep', exercises: PUSH_EXERCISES },
+    sabtu: { amberTitle: 'SABTU • PULL', muscles: 'Punggung • Bisep', exercises: PULL_EXERCISES },
   },
   'starter-strength': {
-    senin:  { amberTitle: 'SENIN • FULL BODY A',  muscles: 'Semua Kelompok Otot', exercises: FULLBODY_EXERCISES },
-    rabu:   { amberTitle: 'RABU • FULL BODY B',   muscles: 'Semua Kelompok Otot', exercises: FULLBODY_EXERCISES },
-    jumat:  { amberTitle: 'JUMAT • FULL BODY A',  muscles: 'Semua Kelompok Otot', exercises: FULLBODY_EXERCISES },
+    senin: { amberTitle: 'SENIN • FULL BODY A', muscles: 'Semua Kelompok Otot', exercises: FULLBODY_EXERCISES },
+    rabu: { amberTitle: 'RABU • FULL BODY B', muscles: 'Semua Kelompok Otot', exercises: FULLBODY_EXERCISES },
+    jumat: { amberTitle: 'JUMAT • FULL BODY A', muscles: 'Semua Kelompok Otot', exercises: FULLBODY_EXERCISES },
   },
   'hypertrophy-pro': {
-    senin:  { amberTitle: 'SENIN • UPPER A',  muscles: 'Dada • Bahu • Punggung • Lengan', exercises: UPPER_EXERCISES },
-    selasa: { amberTitle: 'SELASA • LOWER A', muscles: 'Paha • Gluteus • Betis',           exercises: LOWER_EXERCISES },
-    kamis:  { amberTitle: 'KAMIS • UPPER B',  muscles: 'Dada • Bahu • Punggung • Lengan', exercises: UPPER_EXERCISES },
-    jumat:  { amberTitle: 'JUMAT • LOWER B',  muscles: 'Paha • Gluteus • Betis',           exercises: LOWER_EXERCISES },
+    senin: { amberTitle: 'SENIN • UPPER A', muscles: 'Dada • Bahu • Punggung • Lengan', exercises: UPPER_EXERCISES },
+    selasa: { amberTitle: 'SELASA • LOWER A', muscles: 'Paha • Gluteus • Betis', exercises: LOWER_EXERCISES },
+    kamis: { amberTitle: 'KAMIS • UPPER B', muscles: 'Dada • Bahu • Punggung • Lengan', exercises: UPPER_EXERCISES },
+    jumat: { amberTitle: 'JUMAT • LOWER B', muscles: 'Paha • Gluteus • Betis', exercises: LOWER_EXERCISES },
   },
 };
 
@@ -129,7 +129,7 @@ export default function SessionDetailScreen() {
   }>();
 
   const weekLabel = WEEK_LABELS[weekId as string] ?? weekId;
-  const session   = SESSION_DATA[id as string]?.[sessionId as string];
+  const session = SESSION_DATA[id as string]?.[sessionId as string];
   if (!session) return null;
 
   return (
@@ -190,7 +190,16 @@ export default function SessionDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#0C0C0D' },
+  root: {
+    flex: 1,
+    backgroundColor: '#0C0C0D',
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      maxWidth: 430,
+      marginHorizontal: 'auto',
+      alignSelf: 'center',
+    }),
+  },
 
   navHeader: {
     flexDirection: 'row',

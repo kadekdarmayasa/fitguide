@@ -1,14 +1,14 @@
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const AMBER      = '#EFA500';
-const CARD       = '#171719';
+const AMBER = '#EFA500';
+const CARD = '#171719';
 const CARD_BORDER = '#282829';
-const TEXT_CREAM  = '#F0ECC7';
-const TEXT_MUTED  = '#555555';
-const TEXT_DARK   = '#777777';
+const TEXT_CREAM = '#F0ECC7';
+const TEXT_MUTED = '#555555';
+const TEXT_DARK = '#777777';
 
 type Day = {
   id: string;
@@ -27,18 +27,18 @@ type WeekSchedule = {
 
 const PROGRAM_NAMES: Record<string, string> = {
   'starter-strength': 'Starter Strength',
-  'push-pull-legs':   'Push Pull Legs',
-  'hypertrophy-pro':  'Hypertrophy Pro',
+  'push-pull-legs': 'Push Pull Legs',
+  'hypertrophy-pro': 'Hypertrophy Pro',
 };
 
 const PPL_STANDARD_DAYS: Day[] = [
-  { id: 'senin',   day: 'Senin',   type: 'Push',      muscles: 'Dada, Bahu, Trisep',    exerciseCount: 8, isRest: false },
-  { id: 'selasa',  day: 'Selasa',  type: 'Pull',      muscles: 'Punggung, Bisep',        exerciseCount: 7, isRest: false },
-  { id: 'rabu',    day: 'Rabu',    type: 'Legs',      muscles: 'Paha, Betis, Gluteus',   exerciseCount: 7, isRest: false },
-  { id: 'kamis',   day: 'Kamis',   type: 'Istirahat', muscles: 'Recovery & Stretching',  exerciseCount: null, isRest: true },
-  { id: 'jumat',   day: 'Jumat',   type: 'Push',      muscles: 'Dada, Bahu, Trisep',    exerciseCount: 8, isRest: false },
-  { id: 'sabtu',   day: 'Sabtu',   type: 'Pull',      muscles: 'Punggung, Bisep',        exerciseCount: 7, isRest: false },
-  { id: 'minggu',  day: 'Minggu',  type: 'Istirahat', muscles: 'Recovery Penuh',         exerciseCount: null, isRest: true },
+  { id: 'senin', day: 'Senin', type: 'Push', muscles: 'Dada, Bahu, Trisep', exerciseCount: 8, isRest: false },
+  { id: 'selasa', day: 'Selasa', type: 'Pull', muscles: 'Punggung, Bisep', exerciseCount: 7, isRest: false },
+  { id: 'rabu', day: 'Rabu', type: 'Legs', muscles: 'Paha, Betis, Gluteus', exerciseCount: 7, isRest: false },
+  { id: 'kamis', day: 'Kamis', type: 'Istirahat', muscles: 'Recovery & Stretching', exerciseCount: null, isRest: true },
+  { id: 'jumat', day: 'Jumat', type: 'Push', muscles: 'Dada, Bahu, Trisep', exerciseCount: 8, isRest: false },
+  { id: 'sabtu', day: 'Sabtu', type: 'Pull', muscles: 'Punggung, Bisep', exerciseCount: 7, isRest: false },
+  { id: 'minggu', day: 'Minggu', type: 'Istirahat', muscles: 'Recovery Penuh', exerciseCount: null, isRest: true },
 ];
 
 const WEEK_SCHEDULES: Record<string, Record<string, WeekSchedule>> = {
@@ -47,39 +47,39 @@ const WEEK_SCHEDULES: Record<string, Record<string, WeekSchedule>> = {
       weekTitle: 'MINGGU 1',
       summary: '3 Sesi • Estimasi 45-60 menit/sesi',
       days: [
-        { id: 'senin',  day: 'Senin',   type: 'Full Body A', muscles: 'Semua Kelompok Otot', exerciseCount: 9,    isRest: false },
-        { id: 'selasa', day: 'Selasa',  type: 'Istirahat',   muscles: 'Rest Aktif',           exerciseCount: null, isRest: true  },
-        { id: 'rabu',   day: 'Rabu',    type: 'Full Body B', muscles: 'Semua Kelompok Otot', exerciseCount: 9,    isRest: false },
-        { id: 'kamis',  day: 'Kamis',   type: 'Istirahat',   muscles: 'Rest Aktif',           exerciseCount: null, isRest: true  },
-        { id: 'jumat',  day: 'Jumat',   type: 'Full Body A', muscles: 'Semua Kelompok Otot', exerciseCount: 9,    isRest: false },
-        { id: 'sabtu',  day: 'Sabtu',   type: 'Istirahat',   muscles: 'Rest & Pemulihan',     exerciseCount: null, isRest: true  },
-        { id: 'minggu', day: 'Minggu',  type: 'Istirahat',   muscles: 'Rest Penuh',           exerciseCount: null, isRest: true  },
+        { id: 'senin', day: 'Senin', type: 'Full Body A', muscles: 'Semua Kelompok Otot', exerciseCount: 9, isRest: false },
+        { id: 'selasa', day: 'Selasa', type: 'Istirahat', muscles: 'Rest Aktif', exerciseCount: null, isRest: true },
+        { id: 'rabu', day: 'Rabu', type: 'Full Body B', muscles: 'Semua Kelompok Otot', exerciseCount: 9, isRest: false },
+        { id: 'kamis', day: 'Kamis', type: 'Istirahat', muscles: 'Rest Aktif', exerciseCount: null, isRest: true },
+        { id: 'jumat', day: 'Jumat', type: 'Full Body A', muscles: 'Semua Kelompok Otot', exerciseCount: 9, isRest: false },
+        { id: 'sabtu', day: 'Sabtu', type: 'Istirahat', muscles: 'Rest & Pemulihan', exerciseCount: null, isRest: true },
+        { id: 'minggu', day: 'Minggu', type: 'Istirahat', muscles: 'Rest Penuh', exerciseCount: null, isRest: true },
       ],
     },
     'w2': {
       weekTitle: 'MINGGU 2',
       summary: '3 Sesi • Estimasi 45-60 menit/sesi',
       days: [
-        { id: 'senin',  day: 'Senin',   type: 'Full Body B', muscles: 'Semua Kelompok Otot', exerciseCount: 9,    isRest: false },
-        { id: 'selasa', day: 'Selasa',  type: 'Istirahat',   muscles: 'Rest Aktif',           exerciseCount: null, isRest: true  },
-        { id: 'rabu',   day: 'Rabu',    type: 'Full Body A', muscles: 'Semua Kelompok Otot', exerciseCount: 9,    isRest: false },
-        { id: 'kamis',  day: 'Kamis',   type: 'Istirahat',   muscles: 'Rest Aktif',           exerciseCount: null, isRest: true  },
-        { id: 'jumat',  day: 'Jumat',   type: 'Full Body B', muscles: 'Semua Kelompok Otot', exerciseCount: 9,    isRest: false },
-        { id: 'sabtu',  day: 'Sabtu',   type: 'Istirahat',   muscles: 'Rest & Pemulihan',     exerciseCount: null, isRest: true  },
-        { id: 'minggu', day: 'Minggu',  type: 'Istirahat',   muscles: 'Rest Penuh',           exerciseCount: null, isRest: true  },
+        { id: 'senin', day: 'Senin', type: 'Full Body B', muscles: 'Semua Kelompok Otot', exerciseCount: 9, isRest: false },
+        { id: 'selasa', day: 'Selasa', type: 'Istirahat', muscles: 'Rest Aktif', exerciseCount: null, isRest: true },
+        { id: 'rabu', day: 'Rabu', type: 'Full Body A', muscles: 'Semua Kelompok Otot', exerciseCount: 9, isRest: false },
+        { id: 'kamis', day: 'Kamis', type: 'Istirahat', muscles: 'Rest Aktif', exerciseCount: null, isRest: true },
+        { id: 'jumat', day: 'Jumat', type: 'Full Body B', muscles: 'Semua Kelompok Otot', exerciseCount: 9, isRest: false },
+        { id: 'sabtu', day: 'Sabtu', type: 'Istirahat', muscles: 'Rest & Pemulihan', exerciseCount: null, isRest: true },
+        { id: 'minggu', day: 'Minggu', type: 'Istirahat', muscles: 'Rest Penuh', exerciseCount: null, isRest: true },
       ],
     },
     'w3-4': {
       weekTitle: 'MINGGU 3-4',
       summary: '3 Sesi • Estimasi 50-65 menit/sesi',
       days: [
-        { id: 'senin',  day: 'Senin',   type: 'Full Body A+', muscles: 'Semua Kelompok Otot', exerciseCount: 9,    isRest: false },
-        { id: 'selasa', day: 'Selasa',  type: 'Istirahat',    muscles: 'Rest Aktif',           exerciseCount: null, isRest: true  },
-        { id: 'rabu',   day: 'Rabu',    type: 'Full Body B+', muscles: 'Semua Kelompok Otot', exerciseCount: 9,    isRest: false },
-        { id: 'kamis',  day: 'Kamis',   type: 'Istirahat',    muscles: 'Rest Aktif',           exerciseCount: null, isRest: true  },
-        { id: 'jumat',  day: 'Jumat',   type: 'Full Body A+', muscles: 'Semua Kelompok Otot', exerciseCount: 9,    isRest: false },
-        { id: 'sabtu',  day: 'Sabtu',   type: 'Istirahat',    muscles: 'Rest & Pemulihan',     exerciseCount: null, isRest: true  },
-        { id: 'minggu', day: 'Minggu',  type: 'Istirahat',    muscles: 'Rest Penuh',           exerciseCount: null, isRest: true  },
+        { id: 'senin', day: 'Senin', type: 'Full Body A+', muscles: 'Semua Kelompok Otot', exerciseCount: 9, isRest: false },
+        { id: 'selasa', day: 'Selasa', type: 'Istirahat', muscles: 'Rest Aktif', exerciseCount: null, isRest: true },
+        { id: 'rabu', day: 'Rabu', type: 'Full Body B+', muscles: 'Semua Kelompok Otot', exerciseCount: 9, isRest: false },
+        { id: 'kamis', day: 'Kamis', type: 'Istirahat', muscles: 'Rest Aktif', exerciseCount: null, isRest: true },
+        { id: 'jumat', day: 'Jumat', type: 'Full Body A+', muscles: 'Semua Kelompok Otot', exerciseCount: 9, isRest: false },
+        { id: 'sabtu', day: 'Sabtu', type: 'Istirahat', muscles: 'Rest & Pemulihan', exerciseCount: null, isRest: true },
+        { id: 'minggu', day: 'Minggu', type: 'Istirahat', muscles: 'Rest Penuh', exerciseCount: null, isRest: true },
       ],
     },
   },
@@ -107,39 +107,39 @@ const WEEK_SCHEDULES: Record<string, Record<string, WeekSchedule>> = {
       weekTitle: 'MINGGU 1-4',
       summary: '4 Sesi • Estimasi 60-70 menit/sesi',
       days: [
-        { id: 'senin',  day: 'Senin',   type: 'Upper A',   muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10,   isRest: false },
-        { id: 'selasa', day: 'Selasa',  type: 'Lower A',   muscles: 'Paha, Gluteus, Betis',          exerciseCount: 9,    isRest: false },
-        { id: 'rabu',   day: 'Rabu',    type: 'Istirahat', muscles: 'Rest Aktif',                    exerciseCount: null, isRest: true  },
-        { id: 'kamis',  day: 'Kamis',   type: 'Upper B',   muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10,   isRest: false },
-        { id: 'jumat',  day: 'Jumat',   type: 'Lower B',   muscles: 'Paha, Gluteus, Betis',          exerciseCount: 9,    isRest: false },
-        { id: 'sabtu',  day: 'Sabtu',   type: 'Istirahat', muscles: 'Cardio Ringan',                 exerciseCount: null, isRest: true  },
-        { id: 'minggu', day: 'Minggu',  type: 'Istirahat', muscles: 'Rest Penuh',                    exerciseCount: null, isRest: true  },
+        { id: 'senin', day: 'Senin', type: 'Upper A', muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10, isRest: false },
+        { id: 'selasa', day: 'Selasa', type: 'Lower A', muscles: 'Paha, Gluteus, Betis', exerciseCount: 9, isRest: false },
+        { id: 'rabu', day: 'Rabu', type: 'Istirahat', muscles: 'Rest Aktif', exerciseCount: null, isRest: true },
+        { id: 'kamis', day: 'Kamis', type: 'Upper B', muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10, isRest: false },
+        { id: 'jumat', day: 'Jumat', type: 'Lower B', muscles: 'Paha, Gluteus, Betis', exerciseCount: 9, isRest: false },
+        { id: 'sabtu', day: 'Sabtu', type: 'Istirahat', muscles: 'Cardio Ringan', exerciseCount: null, isRest: true },
+        { id: 'minggu', day: 'Minggu', type: 'Istirahat', muscles: 'Rest Penuh', exerciseCount: null, isRest: true },
       ],
     },
     'w5-8': {
       weekTitle: 'MINGGU 5-8',
       summary: '4 Sesi • Estimasi 65-75 menit/sesi',
       days: [
-        { id: 'senin',  day: 'Senin',   type: 'Upper A+',  muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10,   isRest: false },
-        { id: 'selasa', day: 'Selasa',  type: 'Lower A+',  muscles: 'Paha, Gluteus, Betis',          exerciseCount: 9,    isRest: false },
-        { id: 'rabu',   day: 'Rabu',    type: 'Istirahat', muscles: 'Rest Aktif',                    exerciseCount: null, isRest: true  },
-        { id: 'kamis',  day: 'Kamis',   type: 'Upper B+',  muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10,   isRest: false },
-        { id: 'jumat',  day: 'Jumat',   type: 'Lower B+',  muscles: 'Paha, Gluteus, Betis',          exerciseCount: 9,    isRest: false },
-        { id: 'sabtu',  day: 'Sabtu',   type: 'Istirahat', muscles: 'Cardio Ringan',                 exerciseCount: null, isRest: true  },
-        { id: 'minggu', day: 'Minggu',  type: 'Istirahat', muscles: 'Rest Penuh',                    exerciseCount: null, isRest: true  },
+        { id: 'senin', day: 'Senin', type: 'Upper A+', muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10, isRest: false },
+        { id: 'selasa', day: 'Selasa', type: 'Lower A+', muscles: 'Paha, Gluteus, Betis', exerciseCount: 9, isRest: false },
+        { id: 'rabu', day: 'Rabu', type: 'Istirahat', muscles: 'Rest Aktif', exerciseCount: null, isRest: true },
+        { id: 'kamis', day: 'Kamis', type: 'Upper B+', muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10, isRest: false },
+        { id: 'jumat', day: 'Jumat', type: 'Lower B+', muscles: 'Paha, Gluteus, Betis', exerciseCount: 9, isRest: false },
+        { id: 'sabtu', day: 'Sabtu', type: 'Istirahat', muscles: 'Cardio Ringan', exerciseCount: null, isRest: true },
+        { id: 'minggu', day: 'Minggu', type: 'Istirahat', muscles: 'Rest Penuh', exerciseCount: null, isRest: true },
       ],
     },
     'w9-12': {
       weekTitle: 'MINGGU 9-12',
       summary: '5 Sesi • Estimasi 70-80 menit/sesi',
       days: [
-        { id: 'senin',  day: 'Senin',   type: 'Upper Peak', muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10,   isRest: false },
-        { id: 'selasa', day: 'Selasa',  type: 'Lower Peak', muscles: 'Paha, Gluteus, Betis',          exerciseCount: 9,    isRest: false },
-        { id: 'rabu',   day: 'Rabu',    type: 'Push Peak',  muscles: 'Dada, Bahu, Trisep',            exerciseCount: 9,    isRest: false },
-        { id: 'kamis',  day: 'Kamis',   type: 'Istirahat',  muscles: 'Rest Aktif',                    exerciseCount: null, isRest: true  },
-        { id: 'jumat',  day: 'Jumat',   type: 'Pull Peak',  muscles: 'Punggung, Bisep',               exerciseCount: 9,    isRest: false },
-        { id: 'sabtu',  day: 'Sabtu',   type: 'Deload',     muscles: 'Full Body (ringan)',             exerciseCount: 6,    isRest: false },
-        { id: 'minggu', day: 'Minggu',  type: 'Istirahat',  muscles: 'Rest Penuh',                    exerciseCount: null, isRest: true  },
+        { id: 'senin', day: 'Senin', type: 'Upper Peak', muscles: 'Dada, Bahu, Punggung, Lengan', exerciseCount: 10, isRest: false },
+        { id: 'selasa', day: 'Selasa', type: 'Lower Peak', muscles: 'Paha, Gluteus, Betis', exerciseCount: 9, isRest: false },
+        { id: 'rabu', day: 'Rabu', type: 'Push Peak', muscles: 'Dada, Bahu, Trisep', exerciseCount: 9, isRest: false },
+        { id: 'kamis', day: 'Kamis', type: 'Istirahat', muscles: 'Rest Aktif', exerciseCount: null, isRest: true },
+        { id: 'jumat', day: 'Jumat', type: 'Pull Peak', muscles: 'Punggung, Bisep', exerciseCount: 9, isRest: false },
+        { id: 'sabtu', day: 'Sabtu', type: 'Deload', muscles: 'Full Body (ringan)', exerciseCount: 6, isRest: false },
+        { id: 'minggu', day: 'Minggu', type: 'Istirahat', muscles: 'Rest Penuh', exerciseCount: null, isRest: true },
       ],
     },
   },
@@ -214,7 +214,16 @@ export default function WeekDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#0C0C0D' },
+  root: {
+    flex: 1,
+    backgroundColor: '#0C0C0D',
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      maxWidth: 430,
+      marginHorizontal: 'auto',
+      alignSelf: 'center',
+    }),
+  },
 
   navHeader: {
     flexDirection: 'row',

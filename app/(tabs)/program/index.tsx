@@ -1,13 +1,13 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const AMBER    = '#EFA500';
-const CARD     = '#171719';
+const AMBER = '#EFA500';
+const CARD = '#171719';
 const TEXT_CREAM = '#F0ECC7';
 const TEXT_MUTED = '#555555';
-const TEXT_DARK  = '#777777';
+const TEXT_DARK = '#777777';
 
 type ProgramLevel = 'PEMULA' | 'MENENGAH' | 'LANJUTAN';
 
@@ -22,9 +22,9 @@ type Program = {
 };
 
 const LEVEL_BADGE: Record<ProgramLevel, { bg: string; text: string }> = {
-  PEMULA:   { bg: 'rgba(180,83,9,0.25)',   text: '#F59E0B' },
-  MENENGAH: { bg: 'rgba(29,78,216,0.25)',  text: '#60A5FA' },
-  LANJUTAN: { bg: 'rgba(190,24,93,0.25)', text:  '#F472B6' },
+  PEMULA: { bg: 'rgba(180,83,9,0.25)', text: '#F59E0B' },
+  MENENGAH: { bg: 'rgba(29,78,216,0.25)', text: '#60A5FA' },
+  LANJUTAN: { bg: 'rgba(190,24,93,0.25)', text: '#F472B6' },
 };
 
 const PROGRAMS: Program[] = [
@@ -127,7 +127,16 @@ export default function ProgramScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#0C0C0D' },
+  root: {
+    flex: 1,
+    backgroundColor: '#0C0C0D',
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      maxWidth: 430,
+      marginHorizontal: 'auto',
+      alignSelf: 'center',
+    }),
+  },
   scroll: { flex: 1 },
   scrollContent: {
     paddingHorizontal: 20,

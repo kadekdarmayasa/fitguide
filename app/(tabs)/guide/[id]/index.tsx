@@ -3,29 +3,29 @@ import BackIcon from '@/assets/images/muscle-groups/back.svg';
 import ChestIcon from '@/assets/images/muscle-groups/chest.svg';
 import CoreIcon from '@/assets/images/muscle-groups/core.svg';
 import LegsIcon from '@/assets/images/muscle-groups/legs.svg';
-import ShoulderIcon from '@/assets/images/muscle-groups/shoulder.svg';
 import ArnoldPressIcon from '@/assets/images/muscle-groups/shoulder-exercises/arnold_press.svg';
 import LateralRaiseIcon from '@/assets/images/muscle-groups/shoulder-exercises/lateral_raise.svg';
 import OverheadPressIcon from '@/assets/images/muscle-groups/shoulder-exercises/overhead_press.svg';
+import ShoulderIcon from '@/assets/images/muscle-groups/shoulder.svg';
 import { Badge, ExerciseCard } from '@/components/exercise-card';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgProps } from 'react-native-svg';
 
-const AMBER    = '#EFA500';
-const CARD     = '#171719';
+const AMBER = '#EFA500';
+const CARD = '#171719';
 const TEXT_CREAM = '#F0ECC7';
 const TEXT_MUTED = '#555555';
-const THUMB_BG   = 'rgba(12,12,13,0.5)';
+const THUMB_BG = 'rgba(12,12,13,0.5)';
 
-const B_COMPOUND:  Badge = { label: 'Compound',  bg: 'rgba(239,165,0,0.13)',   text: '#EFA500' };
-const B_ISOLATION: Badge = { label: 'Isolation',  bg: 'rgba(93,133,180,0.13)', text: '#5CA8FF' };
-const B_ISO_WARM:  Badge = { label: 'Isolation',  bg: 'rgba(239,165,0,0.13)',  text: '#EFA500' };
-const B_PUSH:      Badge = { label: 'Push',        bg: 'rgba(255,116,116,0.13)', text: '#FF8585' };
-const B_PULL:      Badge = { label: 'Pull',        bg: 'rgba(93,133,180,0.13)', text: '#5CA8FF' };
+const B_COMPOUND: Badge = { label: 'Compound', bg: 'rgba(239,165,0,0.13)', text: '#EFA500' };
+const B_ISOLATION: Badge = { label: 'Isolation', bg: 'rgba(93,133,180,0.13)', text: '#5CA8FF' };
+const B_ISO_WARM: Badge = { label: 'Isolation', bg: 'rgba(239,165,0,0.13)', text: '#EFA500' };
+const B_PUSH: Badge = { label: 'Push', bg: 'rgba(255,116,116,0.13)', text: '#FF8585' };
+const B_PULL: Badge = { label: 'Pull', bg: 'rgba(93,133,180,0.13)', text: '#5CA8FF' };
 
 type Exercise = {
   id: string;
@@ -50,10 +50,10 @@ const GROUPS: Record<string, GroupData> = {
     description: 'Pectoralis Major (atas & bawah) — otot utama penggerak gerakan mendorong ke depan dan menyilangkan lengan.',
     Icon: ChestIcon,
     exercises: [
-      { id: 'bench-press',     name: 'Bench Press',     targets: 'Upper . Lower', type: 'compound',  movement: 'push', Icon: null, badges: [B_COMPOUND,  B_PUSH] },
-      { id: 'incline-press',   name: 'Incline Press',   targets: 'Upper',         type: 'compound',  movement: 'push', Icon: null, badges: [B_COMPOUND,  B_PUSH] },
-      { id: 'chest-fly',       name: 'Chest Fly',       targets: 'Inner . Outer', type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
-      { id: 'cable-crossover', name: 'Cable Crossover', targets: 'Inner',         type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
+      { id: 'bench-press', name: 'Bench Press', targets: 'Upper . Lower', type: 'compound', movement: 'push', Icon: null, badges: [B_COMPOUND, B_PUSH] },
+      { id: 'incline-press', name: 'Incline Press', targets: 'Upper', type: 'compound', movement: 'push', Icon: null, badges: [B_COMPOUND, B_PUSH] },
+      { id: 'chest-fly', name: 'Chest Fly', targets: 'Inner . Outer', type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
+      { id: 'cable-crossover', name: 'Cable Crossover', targets: 'Inner', type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
     ],
   },
   back: {
@@ -61,10 +61,10 @@ const GROUPS: Record<string, GroupData> = {
     description: 'Latissimus Dorsi, Trapezius, dan Rhomboid — otot-otot yang menstabilkan dan menggerakkan skapula dan tulang belakang.',
     Icon: BackIcon,
     exercises: [
-      { id: 'pull-up',      name: 'Pull-Up',          targets: 'Upper . Lat',    type: 'compound',  movement: 'pull', Icon: null, badges: [B_COMPOUND,  B_PULL] },
-      { id: 'bent-row',     name: 'Bent Over Row',    targets: 'Middle . Lower', type: 'compound',  movement: 'pull', Icon: null, badges: [B_COMPOUND,  B_PULL] },
-      { id: 'lat-pulldown', name: 'Lat Pulldown',     targets: 'Lat',            type: 'compound',  movement: 'pull', Icon: null, badges: [B_COMPOUND,  B_PULL] },
-      { id: 'cable-row',    name: 'Seated Cable Row', targets: 'Middle',         type: 'isolation', movement: 'pull', Icon: null, badges: [B_ISOLATION, B_PULL] },
+      { id: 'pull-up', name: 'Pull-Up', targets: 'Upper . Lat', type: 'compound', movement: 'pull', Icon: null, badges: [B_COMPOUND, B_PULL] },
+      { id: 'bent-row', name: 'Bent Over Row', targets: 'Middle . Lower', type: 'compound', movement: 'pull', Icon: null, badges: [B_COMPOUND, B_PULL] },
+      { id: 'lat-pulldown', name: 'Lat Pulldown', targets: 'Lat', type: 'compound', movement: 'pull', Icon: null, badges: [B_COMPOUND, B_PULL] },
+      { id: 'cable-row', name: 'Seated Cable Row', targets: 'Middle', type: 'isolation', movement: 'pull', Icon: null, badges: [B_ISOLATION, B_PULL] },
     ],
   },
   shoulder: {
@@ -72,9 +72,9 @@ const GROUPS: Record<string, GroupData> = {
     description: 'Deltoid Anterior (depan), Medial (samping) & Posterior (belakang) — tiga kepala yang membentuk bahu.',
     Icon: ShoulderIcon,
     exercises: [
-      { id: 'overhead-press', name: 'Overhead Press', targets: 'Anterior . Medial',             type: 'compound',  movement: 'push', Icon: OverheadPressIcon, badges: [B_COMPOUND,  B_PUSH] },
-      { id: 'lateral-raise',  name: 'Lateral Raise',  targets: 'Medial',                        type: 'isolation', movement: 'push', Icon: LateralRaiseIcon,  badges: [B_ISOLATION, B_PUSH] },
-      { id: 'arnold-press',   name: 'Arnold Press',   targets: 'Anterior . Medial . Posterior', type: 'isolation', movement: 'push', Icon: ArnoldPressIcon,   badges: [B_ISO_WARM,  B_PUSH] },
+      { id: 'overhead-press', name: 'Overhead Press', targets: 'Anterior . Medial', type: 'compound', movement: 'push', Icon: OverheadPressIcon, badges: [B_COMPOUND, B_PUSH] },
+      { id: 'lateral-raise', name: 'Lateral Raise', targets: 'Medial', type: 'isolation', movement: 'push', Icon: LateralRaiseIcon, badges: [B_ISOLATION, B_PUSH] },
+      { id: 'arnold-press', name: 'Arnold Press', targets: 'Anterior . Medial . Posterior', type: 'isolation', movement: 'push', Icon: ArnoldPressIcon, badges: [B_ISO_WARM, B_PUSH] },
     ],
   },
   arms: {
@@ -82,11 +82,11 @@ const GROUPS: Record<string, GroupData> = {
     description: 'Bicep Brachii, Tricep Brachii, dan Brachialis — otot-otot yang menggerakkan siku dan mengatur rotasi lengan bawah.',
     Icon: ArmsIcon,
     exercises: [
-      { id: 'barbell-curl',    name: 'Barbell Curl',     targets: 'Bicep',              type: 'isolation', movement: 'pull', Icon: null, badges: [B_ISOLATION, B_PULL] },
-      { id: 'tricep-pushdown', name: 'Tricep Pushdown',  targets: 'Tricep',             type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
-      { id: 'hammer-curl',     name: 'Hammer Curl',      targets: 'Bicep . Brachialis', type: 'isolation', movement: 'pull', Icon: null, badges: [B_ISOLATION, B_PULL] },
-      { id: 'skull-crusher',   name: 'Skull Crusher',    targets: 'Tricep',             type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
-      { id: 'close-grip',      name: 'Close Grip Press', targets: 'Tricep . Chest',     type: 'compound',  movement: 'push', Icon: null, badges: [B_COMPOUND,  B_PUSH] },
+      { id: 'barbell-curl', name: 'Barbell Curl', targets: 'Bicep', type: 'isolation', movement: 'pull', Icon: null, badges: [B_ISOLATION, B_PULL] },
+      { id: 'tricep-pushdown', name: 'Tricep Pushdown', targets: 'Tricep', type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
+      { id: 'hammer-curl', name: 'Hammer Curl', targets: 'Bicep . Brachialis', type: 'isolation', movement: 'pull', Icon: null, badges: [B_ISOLATION, B_PULL] },
+      { id: 'skull-crusher', name: 'Skull Crusher', targets: 'Tricep', type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
+      { id: 'close-grip', name: 'Close Grip Press', targets: 'Tricep . Chest', type: 'compound', movement: 'push', Icon: null, badges: [B_COMPOUND, B_PUSH] },
     ],
   },
   legs: {
@@ -94,11 +94,11 @@ const GROUPS: Record<string, GroupData> = {
     description: 'Quadricep, Hamstring, Glutes, dan Calves — kelompok otot terbesar yang menopang gerakan kaki dan pinggul.',
     Icon: LegsIcon,
     exercises: [
-      { id: 'squat',         name: 'Squat',             targets: 'Quad . Glute',      type: 'compound',  movement: 'push',  Icon: null, badges: [B_COMPOUND,  B_PUSH] },
-      { id: 'leg-press',     name: 'Leg Press',         targets: 'Quad . Glute',      type: 'compound',  movement: 'push',  Icon: null, badges: [B_COMPOUND,  B_PUSH] },
-      { id: 'rdl',           name: 'Romanian Deadlift', targets: 'Hamstring . Glute', type: 'compound',  movement: 'hinge', Icon: null, badges: [B_COMPOUND,  B_PULL] },
-      { id: 'leg-curl',      name: 'Leg Curl',          targets: 'Hamstring',         type: 'isolation', movement: 'pull',  Icon: null, badges: [B_ISOLATION, B_PULL] },
-      { id: 'leg-extension', name: 'Leg Extension',     targets: 'Quad',              type: 'isolation', movement: 'push',  Icon: null, badges: [B_ISOLATION, B_PUSH] },
+      { id: 'squat', name: 'Squat', targets: 'Quad . Glute', type: 'compound', movement: 'push', Icon: null, badges: [B_COMPOUND, B_PUSH] },
+      { id: 'leg-press', name: 'Leg Press', targets: 'Quad . Glute', type: 'compound', movement: 'push', Icon: null, badges: [B_COMPOUND, B_PUSH] },
+      { id: 'rdl', name: 'Romanian Deadlift', targets: 'Hamstring . Glute', type: 'compound', movement: 'hinge', Icon: null, badges: [B_COMPOUND, B_PULL] },
+      { id: 'leg-curl', name: 'Leg Curl', targets: 'Hamstring', type: 'isolation', movement: 'pull', Icon: null, badges: [B_ISOLATION, B_PULL] },
+      { id: 'leg-extension', name: 'Leg Extension', targets: 'Quad', type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
     ],
   },
   core: {
@@ -106,25 +106,25 @@ const GROUPS: Record<string, GroupData> = {
     description: 'Rectus Abdominis, Obliques, dan Transversus Abdominis — otot-otot pusat tubuh yang menstabilkan tulang belakang.',
     Icon: CoreIcon,
     exercises: [
-      { id: 'plank',        name: 'Plank',             targets: 'Deep Core',      type: 'compound',  movement: 'push', Icon: null, badges: [B_COMPOUND,  B_PUSH] },
-      { id: 'crunch',       name: 'Crunch',            targets: 'Rectus',         type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
-      { id: 'leg-raise',    name: 'Hanging Leg Raise', targets: 'Lower . Rectus', type: 'isolation', movement: 'pull', Icon: null, badges: [B_ISOLATION, B_PULL] },
-      { id: 'cable-crunch', name: 'Cable Crunch',      targets: 'Rectus',         type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
+      { id: 'plank', name: 'Plank', targets: 'Deep Core', type: 'compound', movement: 'push', Icon: null, badges: [B_COMPOUND, B_PUSH] },
+      { id: 'crunch', name: 'Crunch', targets: 'Rectus', type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
+      { id: 'leg-raise', name: 'Hanging Leg Raise', targets: 'Lower . Rectus', type: 'isolation', movement: 'pull', Icon: null, badges: [B_ISOLATION, B_PULL] },
+      { id: 'cable-crunch', name: 'Cable Crunch', targets: 'Rectus', type: 'isolation', movement: 'push', Icon: null, badges: [B_ISOLATION, B_PUSH] },
     ],
   },
 };
 
 const FILTERS = [
-  { id: 'semua',     label: 'Semua'     },
-  { id: 'compound',  label: 'Compound'  },
+  { id: 'semua', label: 'Semua' },
+  { id: 'compound', label: 'Compound' },
   { id: 'isolation', label: 'Isolation' },
-  { id: 'push',      label: 'Push'      },
+  { id: 'push', label: 'Push' },
 ];
 
 export default function MuscleGroupDetail() {
-  const { id }    = useLocalSearchParams<{ id: string }>();
-  const router    = useRouter();
-  const insets    = useSafeAreaInsets();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [activeFilter, setActiveFilter] = useState('semua');
 
   const group = GROUPS[id as keyof typeof GROUPS];
@@ -133,10 +133,10 @@ export default function MuscleGroupDetail() {
   const { title, description, Icon, exercises } = group;
 
   const filtered = exercises.filter((ex) => {
-    if (activeFilter === 'semua')     return true;
-    if (activeFilter === 'compound')  return ex.type === 'compound';
+    if (activeFilter === 'semua') return true;
+    if (activeFilter === 'compound') return ex.type === 'compound';
     if (activeFilter === 'isolation') return ex.type === 'isolation';
-    if (activeFilter === 'push')      return ex.movement === 'push';
+    if (activeFilter === 'push') return ex.movement === 'push';
     return true;
   });
 
@@ -201,7 +201,16 @@ export default function MuscleGroupDetail() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#0C0C0D' },
+  root: {
+    flex: 1,
+    backgroundColor: '#0C0C0D',
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      maxWidth: 430,
+      marginHorizontal: 'auto',
+      alignSelf: 'center',
+    }),
+  },
 
   navHeader: {
     flexDirection: 'row',
